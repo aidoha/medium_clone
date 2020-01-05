@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
 import useFetch from '../../hooks/useFetch';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 const Authentication = props => {
 	const isLogin = props.match.path === '/login';
@@ -14,6 +15,7 @@ const Authentication = props => {
 	const [username, setUsername] = useState('');
 	const [isSuccessfullSubmit, setIsSuccessfullSubmit] = useState(false);
 	const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
+	const [token, setToken] = useLocalStorage('token');
 
 	const handleSubmit = event => {
 		event.preventDefault();
@@ -25,11 +27,10 @@ const Authentication = props => {
 	};
 
 	useEffect(() => {
-		console.log('response', response);
 		if (!response) {
 			return;
 		}
-		localStorage.setItem('token', response.user.token);
+		setToken(response.user.token);
 		setIsSuccessfullSubmit(true);
 	}, [response]);
 
