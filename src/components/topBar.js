@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/currentUser';
 
-const Topbar = () => {
+const Topbar = memo(() => {
 	const [currentUserState] = useContext(CurrentUserContext);
 	const { isLoggedIn, currentUser } = currentUserState;
 	return (
@@ -51,6 +51,6 @@ const Topbar = () => {
 			</div>
 		</nav>
 	);
-};
+});
 
 export default Topbar;

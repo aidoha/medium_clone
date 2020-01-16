@@ -10,11 +10,11 @@ import PopularTags from '../../components/popularTags';
 import FeedToggler from '../../components/feedToggler';
 import { getPaginator, limit } from '../../utils';
 
-const GlobalFeed = ({ location, match }) => {
+const YourFeed = ({ location, match }) => {
 	const tagName = match.params.slug;
 	const { currentPage, offset } = getPaginator(location.search);
 	const stringifiedParams = stringify({ limit, offset });
-	const apiUrl = `/articles?${stringifiedParams}`;
+	const apiUrl = `/articles/feed?${stringifiedParams}`;
 	const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
 	const url = match.url;
 
@@ -57,4 +57,4 @@ const GlobalFeed = ({ location, match }) => {
 	);
 };
 
-export default GlobalFeed;
+export default YourFeed;
