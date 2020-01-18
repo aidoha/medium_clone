@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import TagList from './tagList';
 
 const Feed = ({ articles }) => {
 	return (
@@ -22,13 +23,7 @@ const Feed = ({ articles }) => {
 							<h1>{title}</h1>
 							<p>{description}</p>
 							<span>Read more...</span>
-							<ul className="tag-list">
-								{tagList.map(tag => (
-									<li key={tag} className="tag-default tag-pill tag-outline">
-										{tag}
-									</li>
-								))}
-							</ul>
+							<TagList tags={tagList} />
 						</Link>
 					</div>
 				);
