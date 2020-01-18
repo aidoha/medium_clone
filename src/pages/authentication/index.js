@@ -4,7 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { CurrentUserContext } from '../../contexts/currentUser';
-import BackendErrorMessages from './components/backendErrorMessages';
+import BackendErrorMessages from '../../components/backendErrorMessages';
+import { SET_AUTHORIZED } from '../../types';
 
 const Authentication = props => {
 	const isLogin = props.match.path === '/login';
@@ -18,7 +19,7 @@ const Authentication = props => {
 	const [isSuccessfullSubmit, setIsSuccessfullSubmit] = useState(false);
 	const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
 	const [, setToken] = useLocalStorage('token');
-	const [, setCurrentUserState] = useContext(CurrentUserContext);
+	const [, dispatch] = useContext(CurrentUserContext);
 
 	const handleSubmit = event => {
 		event.preventDefault();
@@ -35,13 +36,11 @@ const Authentication = props => {
 		}
 		setToken(response.user.token);
 		setIsSuccessfullSubmit(true);
-		setCurrentUserState(state => ({
-			...state,
-			isLoggedIn: true,
-			isLoading: false,
-			currentUser: response.user,
-		}));
-	}, [response, setToken, setCurrentUserState]);
+		dispatch({
+			type: SET_AUTHORIZED,
+			payload: response.user,
+		});
+	}, [response, setToken, dispatch]);
 
 	if (isSuccessfullSubmit) {
 		return <Redirect to="/" />;
