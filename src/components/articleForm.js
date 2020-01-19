@@ -22,7 +22,6 @@ const ArticleForm = ({ onSubmit, errors, initialValues }) => {
 		setBody(initialValues.body);
 		setTagList(initialValues.tagList.join(' '));
 	}, [initialValues]);
-
 	return (
 		<div className="editor-page">
 			<div className="container page">
