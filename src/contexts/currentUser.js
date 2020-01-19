@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import { LOADING, SET_AUTHORIZED, SET_UNAUTHORIZED } from '../types';
+import { LOADING, SET_AUTHORIZED, SET_UNAUTHORIZED, LOGOUT } from '../types';
 
 const initialState = {
 	isLoading: false,
@@ -15,6 +15,8 @@ const reducer = (state, action) => {
 			return { ...state, isLoggedIn: true, isLoading: false, currentUser: action.payload };
 		case SET_UNAUTHORIZED:
 			return { ...state, isLoggedIn: false };
+		case LOGOUT:
+			return { ...initialState, isLoggedIn: false };
 		default:
 			return state;
 	}
