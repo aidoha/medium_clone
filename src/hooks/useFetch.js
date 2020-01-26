@@ -16,6 +16,10 @@ export default url => {
 	}, []);
 
 	useEffect(() => {
+		let skipGetResponseAfterUnmount = false;
+		if (!isLoading) {
+			return;
+		}
 		const requestOptions = {
 			...options,
 			...{
@@ -25,18 +29,23 @@ export default url => {
 			},
 		};
 
-		if (!isLoading) {
-			return;
-		}
 		axios(baseUrl + url, requestOptions)
 			.then(res => {
-				setIsLoading(false);
-				setResponse(res.data);
+				if (!skipGetResponseAfterUnmount) {
+					setIsLoading(false);
+					setResponse(res.data);
+				}
 			})
 			.catch(error => {
-				setIsLoading(false);
-				setError(error.response.data);
+				if (!skipGetResponseAfterUnmount) {
+					setIsLoading(false);
+					setError(error.response.data);
+				}
 			});
+
+		return () => {
+			skipGetResponseAfterUnmount = true;
+		};
 	}, [isLoading, options, url, token]);
 
 	return [{ response, isLoading, error }, doFetch];
