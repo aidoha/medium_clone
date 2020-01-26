@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import TagList from './tagList';
 import AddToFavorites from './addToFavorites';
+import { CurrentUserContext } from '../contexts/currentUser';
 
 const Feed = ({ articles }) => {
+	const [currentUserState] = useContext(CurrentUserContext);
+	const { isLoggedIn } = currentUserState;
 	return (
 		<div>
 			{articles.map((article, index) => {
@@ -20,11 +23,13 @@ const Feed = ({ articles }) => {
 								<span className="date">{createdAt}</span>
 							</div>
 							<div className="pull-xs-right">
-								<AddToFavorites
-									isFavorited={favorited}
-									favoritesCount={favoritesCount}
-									articleSlug={slug}
-								/>
+								{isLoggedIn && (
+									<AddToFavorites
+										isFavorited={favorited}
+										favoritesCount={favoritesCount}
+										articleSlug={slug}
+									/>
+								)}
 							</div>
 						</div>
 						<Link to={`/articles/${slug}`} className="preview-link">
